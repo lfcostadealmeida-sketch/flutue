@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agentes de IA para Advogados – Flutue</title>
+  <meta name="description" content="Agentes de IA para escritórios e profissionais do direito — automação inteligente pela Flutue.">
+  <link rel="icon" href="referencias/Flutue_Prancheta%201.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f3f0;
+      --card: #ffffff;
+      --ink: #141414;
+      --muted: #6b6b6b;
+      --line: #e4e1dc;
+      --accent: #d4f000;
+      --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg); color: var(--ink);
+      -webkit-font-smoothing: antialiased; line-height: 1.5;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    .site-header {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 6vw;
+      background: rgba(245,243,240,0.82);
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .logo img { height: 30px; width: auto; }
+    .nav { display: flex; gap: 34px; align-items: center; }
+    .nav a { font-size: 0.95rem; font-weight: 500; opacity: 0.85; transition: opacity .2s; }
+    .nav a:hover { opacity: 1; }
+    .nav a.active { font-weight: 600; }
+
+    .wrap { max-width: 1100px; margin: 0 auto; padding-left: 6vw; padding-right: 6vw; }
+
+    .breadcrumb {
+      padding-top: 40px; font-size: 0.85rem; color: var(--muted);
+    }
+    .breadcrumb a:hover { color: var(--ink); }
+
+    .hero { padding-top: 56px; }
+    .label {
+      display: inline-block; font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+      border: 1px solid var(--line); border-radius: 100px;
+      padding: 7px 15px; margin-bottom: 22px;
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 5.5vw, 4rem); font-weight: 700;
+      letter-spacing: -0.02em; line-height: 1.04;
+    }
+    .hero .lede {
+      margin-top: 20px; max-width: 640px; font-size: 1.1rem; color: #3f3f3f;
+    }
+
+    /* ---------- Section heading ---------- */
+    .section { padding-top: 70px; }
+    .section-eyebrow {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .section-title {
+      margin-top: 12px; font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 700; letter-spacing: -0.02em; line-height: 1.1;
+    }
+    .section-sub { margin-top: 14px; max-width: 640px; color: var(--muted); font-size: 1.02rem; }
+
+    /* ---------- Vídeo ---------- */
+    .video-embed {
+      margin-top: 30px; position: relative; width: 100%;
+      aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden;
+      border: 1px solid var(--line); background: #000;
+    }
+    .video-embed iframe {
+      position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+    }
+    .video-fallback { position: absolute; inset: 0; display: none; text-decoration: none; }
+    .video-embed.is-file .video-fallback { display: block; }
+    .video-embed.is-file iframe { display: none; }
+    .video-fallback img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+      transition: transform .4s ease, filter .3s ease;
+    }
+    .video-fallback:hover img { transform: scale(1.03); filter: brightness(0.9); }
+    .video-fallback .vf-play {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 84px; height: 60px; background: #ff0000; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.35); transition: transform .25s ease;
+    }
+    .video-fallback:hover .vf-play { transform: translate(-50%, -50%) scale(1.08); }
+    .video-fallback .vf-play::after {
+      content: ""; display: block; border-style: solid;
+      border-width: 13px 0 13px 22px; border-color: transparent transparent transparent #fff;
+      margin-left: 4px;
+    }
+    .video-fallback .vf-cap {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 40px 20px 16px; color: #fff; font-size: 0.9rem; font-weight: 600;
+      background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0));
+    }
+
+    /* ---------- Features ---------- */
+    .features {
+      margin-top: 34px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 18px;
+    }
+    .feature {
+      position: relative;
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 16px; padding: 26px 24px;
+    }
+    .feature .feature-badge {
+      position: absolute; top: -12px; left: 24px;
+      background: var(--accent); color: #1a1a1a;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 6px 14px; border-radius: 100px;
+    }
+    .feature .ico {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: var(--accent); color: #1a1a1a;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; margin-bottom: 16px;
+    }
+    .feature h3 { font-size: 1.12rem; font-weight: 700; letter-spacing: -0.01em; }
+    .feature p { margin-top: 8px; color: var(--muted); font-size: 0.95rem; }
+    .features-note { margin-top: 18px; font-size: 0.8rem; color: var(--muted); }
+
+    /* ---------- Pricing ---------- */
+    .plans {
+      margin-top: 34px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+      align-items: stretch;
+    }
+    .plan {
+      position: relative;
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 20px; padding: 34px 28px;
+      display: flex; flex-direction: column;
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+    .plan:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.08); border-color: #d4d0c9;
+    }
+    .plan.featured { border-color: var(--ink); }
+    .plan .badge {
+      position: absolute; top: -12px; left: 28px;
+      background: var(--accent); color: #1a1a1a;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 6px 14px; border-radius: 100px;
+    }
+    .plan .plan-name {
+      font-size: 0.82rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--ink);
+    }
+    .plan .plan-title {
+      margin-top: 10px; font-size: 1.02rem; font-weight: 600;
+      letter-spacing: -0.01em; line-height: 1.3; color: #3f3f3f;
+      min-height: 2.6em;
+    }
+    /* Benefits list — comes right after the subtitle */
+    .plan ul { list-style: none; margin-top: 18px; display: flex; flex-direction: column; gap: 12px; }
+    /* Price block — comes AFTER the benefits, anchored near the bottom */
+    .plan .price-area {
+      margin-top: auto; padding-top: 22px; border-top: 1px solid var(--line);
+    }
+    .plan .price-old {
+      font-size: 1rem; color: #9a958c;
+      text-decoration: line-through; text-decoration-thickness: 1.5px;
+    }
+    .plan .price-old.empty { display: none; }
+    .plan .price-primary {
+      margin-top: 4px; font-size: 1.9rem; font-weight: 700;
+      color: var(--ink); letter-spacing: -0.02em; line-height: 1.05;
+    }
+    .plan .price-primary span { font-size: 0.92rem; font-weight: 500; color: var(--muted); }
+    .plan .price-secondary { margin-top: 6px; font-size: 0.95rem; color: var(--muted); }
+    .plan .price-save {
+      margin-top: 10px; display: inline-block;
+      font-size: 0.78rem; font-weight: 600; color: #4b5d00;
+      background: rgba(212,240,0,0.35); border: 1px solid rgba(212,240,0,0.7);
+      padding: 4px 10px; border-radius: 100px;
+    }
+    .plan li { position: relative; padding-left: 26px; font-size: 0.96rem; color: #3f3f3f; }
+    .plan li::before {
+      content: "✓"; position: absolute; left: 0; top: 0;
+      color: #1a1a1a; font-weight: 700;
+    }
+    .plan li.sub {
+      padding-left: 40px; margin-top: -4px; font-size: 0.9rem; color: var(--muted);
+    }
+    .plan li.sub::before {
+      content: "•"; left: 24px; color: var(--muted); font-weight: 700;
+    }
+    .plan li.no-check { padding-left: 0; }
+    .plan li.no-check::before { content: none; }
+    .plan .bonus-tag,
+    .plan .total-agents {
+      display: inline-block; font-weight: 700; letter-spacing: 0.04em;
+      border-radius: 100px; vertical-align: middle;
+    }
+    .plan .bonus-tag {
+      margin-left: 6px; font-size: 0.64rem; text-transform: uppercase;
+      color: #4b5d00; background: rgba(212,240,0,0.35);
+      border: 1px solid rgba(212,240,0,0.7); padding: 1px 8px;
+    }
+    .plan .total-agents {
+      font-size: 0.82rem; color: #1a1a1a; background: var(--accent);
+      padding: 5px 13px;
+    }
+    .plan .total-agents.sm { font-size: 0.72rem; padding: 5px 11px; white-space: nowrap; }
+    /* Profissional — destaque do diferencial + exemplos */
+    .plan li.feature-highlight {
+      padding: 11px 14px 11px 38px; margin: 2px 0;
+      background: rgba(212,240,0,0.22); border: 1px solid rgba(212,240,0,0.6);
+      border-radius: 12px; font-weight: 700; color: var(--ink); font-size: 0.98rem;
+    }
+    .plan li.feature-highlight::before {
+      content: "★"; left: 14px; top: 11px; color: #6b7d00;
+    }
+    .plan li.feature-highlight.mark-asterisk::before { content: "*"; top: 14px; }
+    .plan li.feature-highlight.mark-plus::before { content: "+"; }
+    .plan li.ex-note { padding-left: 0; }
+    .plan li.ex-note::before { content: none; }
+    .plan .ex-label {
+      display: block; font-size: 0.85rem; font-style: italic;
+      color: var(--muted); margin-bottom: 10px;
+    }
+    .plan .ex-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .plan .ex-tags span {
+      font-size: 0.74rem; color: #2f2f2f; background: #faf9f7;
+      border: 1px solid #d4d0c9; border-radius: 100px; padding: 3px 10px;
+      white-space: nowrap;
+    }
+    .plan .plan-footnote {
+      margin-top: 18px; font-size: 0.82rem; color: var(--muted);
+      font-style: italic; line-height: 1.45;
+    }
+    .plan .btn { margin-top: 18px; }
+    .plan .cta-space { display: none; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 13px 26px; border-radius: 100px; font-weight: 600; font-size: 0.98rem;
+      border: 1px solid var(--ink); transition: opacity .2s, background .2s, color .2s;
+      text-align: center; width: 100%;
+    }
+    .btn.primary { background: var(--ink); color: #fff; }
+    .btn.primary:hover { opacity: 0.85; }
+    .btn.ghost:hover { background: var(--ink); color: #fff; }
+
+    /* ---------- Nota dos planos ---------- */
+    .plans-note {
+      margin: 30px auto 0; max-width: 820px;
+      display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap;
+      background: rgba(212,240,0,0.18); border: 1px solid rgba(212,240,0,0.65);
+      border-radius: 14px; padding: 16px 20px;
+      font-size: 0.92rem; font-weight: 700; color: var(--ink); line-height: 1.5;
+    }
+    .plans-note-tag {
+      flex-shrink: 0; background: var(--accent); color: #1a1a1a;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 5px 12px; border-radius: 100px;
+    }
+    .plans-note > span:last-child { flex: 1; min-width: 240px; }
+
+    /* ---------- Bottom CTA ---------- */
+    .cta-panel {
+      margin-top: 70px; margin-bottom: 90px;
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 20px; padding: 44px 36px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 20px;
+    }
+    .cta-panel h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.01em; }
+    .cta-panel p { margin-top: 6px; color: var(--muted); }
+    .cta-panel .btn { width: auto; }
+
+    /* ---------- Footer ---------- */
+    .site-footer {
+      padding: 40px 6vw; border-top: 1px solid var(--line);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 14px; color: var(--muted); font-size: 0.88rem;
+    }
+    .site-footer a:hover { color: var(--ink); }
+
+    @media (max-width: 900px) {
+      .plans { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px) {
+      .nav { gap: 18px; }
+      .nav a { font-size: 0.9rem; }
+      .hero { padding-top: 22px; }
+      /* Cards de funcionalidades mais compactos no mobile */
+      .features { gap: 12px; margin-top: 22px; }
+      .feature { padding: 18px 18px; }
+      .feature .ico { width: 38px; height: 38px; font-size: 1.05rem; margin-bottom: 12px; }
+      .feature h3 { font-size: 1.02rem; line-height: 1.25; }
+      .feature p { font-size: 0.9rem; margin-top: 6px; line-height: 1.45; }
+      /* Menos espaço em branco entre as seções no mobile */
+      .section { padding-top: 40px; }
+      .section-sub { margin-top: 10px; }
+      .features-note { margin-top: 14px; }
+      .plans { margin-top: 24px; }
+      .plans-note { margin-top: 22px; padding: 14px 16px; }
+      .cta-panel { margin-top: 40px; margin-bottom: 48px; padding: 30px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="logo" href="/" aria-label="Flutue — página inicial">
+      <img src="referencias/Flutue_Prancheta%201.png" alt="Flutue">
+    </a>
+    <nav class="nav">
+      <a href="/">Início</a>
+      <a href="/studio">Sobre</a>
+      <a href="/agentes.html" class="active">Agentes</a>
+      <a href="/contact" data-wa="geral">Contato</a>
+    </nav>
+  </header>
+
+  <section class="wrap hero">
+    <h1>Agentes de IA para Advogados</h1>
+    <p class="lede">Automação inteligente para escritórios e profissionais do direito — reduzindo tarefas repetitivas e liberando tempo para o que realmente importa: seus clientes.</p>
+
+    <div class="video-embed" id="flutue-video">
+      <iframe id="flutue-video-frame" title="Flutue — Agentes de IA para Advogados"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen loading="lazy"></iframe>
+      <a class="video-fallback" href="https://youtu.be/0G3UZBXamPA" target="_blank" rel="noopener"
+         aria-label="Assistir ao vídeo no YouTube">
+        <img src="https://img.youtube.com/vi/0G3UZBXamPA/maxresdefault.jpg"
+             alt="Agentes de IA para Advogados — assista ao vídeo"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/0G3UZBXamPA/hqdefault.jpg';">
+        <span class="vf-play" aria-hidden="true"></span>
+        <span class="vf-cap">▶ Assistir no YouTube</span>
+      </a>
+    </div>
+    <script>
+      (function () {
+        var box = document.getElementById('flutue-video');
+        var frame = document.getElementById('flutue-video-frame');
+        if (!box || !frame) return;
+        var origin = window.location.origin;
+        var served = origin && origin !== 'null' && /^https?:/i.test(origin);
+        if (served) {
+          var src = 'https://www.youtube.com/embed/0G3UZBXamPA?rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=' + encodeURIComponent(origin);
+          frame.src = src;
+        } else {
+          // Aberto como arquivo local (file://): o YouTube bloqueia o embed (Erro 153) → mostra o fallback
+          box.classList.add('is-file');
+        }
+      })();
+    </script>
+  </section>
+
+  <section class="wrap section">
+    <p class="section-eyebrow">Funcionalidades</p>
+    <h2 class="section-title">O que os agentes fazem por você</h2>
+    <p class="section-sub">Agentes treinados para o dia a dia jurídico, integrados às ferramentas que o seu escritório já usa.</p>
+
+    <div class="features">
+      <div class="feature">
+        <span class="ico">📄</span>
+        <h3>Análise de documentos</h3>
+        <p>Leitura e análise de contratos, petições e processos, destacando informações relevantes e pontos de atenção.</p>
+      </div>
+      <div class="feature">
+        <span class="ico">✍️</span>
+        <h3>Redação de documentos</h3>
+        <p>Geração de minutas e documentos jurídicos a partir das informações e do contexto de cada caso.</p>
+      </div>
+      <div class="feature">
+        <span class="ico">🔎</span>
+        <h3>Pesquisa jurídica</h3>
+        <p>Pesquisa de legislação e jurisprudência, organizando as informações e apresentando as fontes para conferência.</p>
+      </div>
+      <div class="feature">
+        <span class="ico">⚖️</span>
+        <h3>Preparação de audiências e reuniões</h3>
+        <p>Organização das principais informações do caso para preparar audiências e reuniões com mais segurança e eficiência.</p>
+      </div>
+      <div class="feature">
+        <span class="ico">📅</span>
+        <h3>Gestão de prazos e organização do caso</h3>
+        <p>Identificação e organização de prazos, datas importantes e providências relacionadas ao processo.</p>
+      </div>
+      <div class="feature">
+        <span class="feature-badge">Disponível à parte</span>
+        <span class="ico">💬</span>
+        <h3>Atendimento ao cliente</h3>
+        <p>Respostas rápidas a dúvidas frequentes e triagem inicial de novos atendimentos, 24/7.</p>
+      </div>
+    </div>
+    <p class="features-note">Consulte cada plano para cada benefício.</p>
+  </section>
+
+  <section class="wrap section">
+    <p class="section-eyebrow">Planos</p>
+    <h2 class="section-title">Escolha como a IA vai trabalhar no seu escritório</h2>
+    <p class="section-sub">Comece com os fluxos essenciais, tenha uma estrutura especializada na sua área ou desenvolva uma solução sob medida.</p>
+
+    <div class="plans">
+      <div class="plan">
+        <span class="plan-name">Essencial</span>
+        <h3 class="plan-title">Implementação de IA para seu escritório</h3>
+        <ul>
+          <li>3 agentes de IA especializados:</li>
+          <li class="sub">Análise de documentos</li>
+          <li class="sub">Redação de documentos</li>
+          <li class="sub">Pesquisa jurídica</li>
+          <li>Configuração dos agentes</li>
+          <li>Implementação dentro do Claude/Cowork</li>
+          <li>Treinamento para utilização</li>
+          <li>Suporte por 30 dias</li>
+          <li class="bonus">Configuração remota <span class="bonus-tag">Bônus</span></li>
+        </ul>
+        <div class="price-area">
+          <p class="price-old">R$ 997</p>
+          <p class="price-primary">R$ 467 <span>à vista no Pix</span></p>
+          <p class="price-secondary">ou R$ 59,70 em 10x</p>
+          <p class="price-save">✓ Economize R$ 100 no Pix</p>
+        </div>
+        <a class="btn ghost" href="/contact" data-wa="essencial">Contratar</a>
+      </div>
+
+      <div class="plan featured">
+        <span class="badge">Mais popular</span>
+        <span class="plan-name">Profissional</span>
+        <h3 class="plan-title">Especializado na área do escritório</h3>
+        <ul>
+          <li>Além dos 3 agentes do Essencial:</li>
+          <li class="feature-highlight mark-asterisk">Agente dedicado à sua área de atuação</li>
+          <li class="ex-note no-check">
+            <span class="ex-label">Ex.: Criminalista</span>
+            <span class="ex-tags">
+              <span>Tribunal do Júri</span>
+              <span>Entorpecentes</span>
+              <span>Crimes sexuais</span>
+              <span>Crimes patrimoniais</span>
+            </span>
+          </li>
+          <li class="sub">Preparação de audiências e reuniões</li>
+          <li class="sub">Mapa de prazos e providências</li>
+          <li class="no-check"><span class="total-agents">6 agentes de IA no total</span></li>
+          <li>Suporte prioritário</li>
+        </ul>
+        <div class="price-area">
+          <p class="price-old">R$ 1.997</p>
+          <p class="price-primary">R$ 997 <span>à vista no Pix</span></p>
+          <p class="price-secondary">ou R$ 108,36 em 10x</p>
+          <p class="price-save">✓ Economize R$ 86,60 no Pix</p>
+        </div>
+        <a class="btn primary" href="/contact" data-wa="profissional">Contratar</a>
+      </div>
+
+      <div class="plan">
+        <span class="plan-name">Personalizado</span>
+        <h3 class="plan-title">IA desenvolvida para o seu escritório</h3>
+        <ul>
+          <li class="feature-highlight mark-plus">Agentes dedicados às áreas de sua escolha</li>
+          <li class="ex-note no-check">
+            <span class="ex-label">Ex.:</span>
+            <span class="ex-tags">
+              <span>Cível</span>
+              <span>Família</span>
+              <span>Previdenciário</span>
+              <span>Trabalhista</span>
+              <span>Criminal</span>
+              <span>etc.</span>
+            </span>
+          </li>
+          <li>Agentes desenvolvidos sob medida para a rotina do escritório</li>
+          <li>Configuração com seus processos, documentos e modelos</li>
+          <li>Fluxos de trabalho personalizados</li>
+          <li>Acompanhamento dedicado na implementação</li>
+          <li class="no-check"><span class="total-agents sm">Número de agentes à sua escolha</span></li>
+        </ul>
+        <p class="plan-footnote">Uma solução construída de acordo com a forma como seu escritório trabalha.</p>
+        <div class="price-area">
+          <p class="price-primary">Sob consulta</p>
+        </div>
+        <a class="btn ghost" href="/contact" data-wa="personalizado">Falar com especialista</a>
+      </div>
+    </div>
+
+    <p class="plans-note">
+      <span class="plans-note-tag">Importante</span>
+      <span>* A utilização dos agentes requer uma assinatura paga compatível da Claude. A assinatura da Claude é contratada separadamente pelo cliente e não está incluída no valor da implementação.</span>
+    </p>
+  </section>
+
+  <section class="wrap">
+    <div class="cta-panel">
+      <div>
+        <h2>Pronto para automatizar seu escritório?</h2>
+        <p>Fale com a gente e descubra qual agente faz mais sentido para você.</p>
+      </div>
+      <a class="btn primary" href="/contact" data-wa="geral">Falar com a Flutue</a>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <span>© 2026 Flutue</span>
+    <a href="/agentes.html">← Voltar para Agentes</a>
+  </footer>
+
+  <script>
+    /* ============================================================
+       WHATSAPP — INSIRA SEU NÚMERO APENAS AQUI (uma única vez)
+       Use só os dígitos: DDI + DDD + número.  Ex.: 5541988680969
+       (pode colar o número puro; símbolos e espaços são ignorados)
+       ============================================================ */
+    var WHATSAPP_NUMERO = '5541988680969';
+
+    (function () {
+      var digitos = String(WHATSAPP_NUMERO).replace(/\D/g, '');
+      var base = 'https://wa.me/' + digitos;
+
+      var MENSAGENS = {
+        geral: 'Olá! Quero saber mais sobre os agentes de IA para advogados.',
+        essencial: 'Olá! Tenho interesse no plano Essencial de agentes de IA para advogados.',
+        profissional: 'Olá! Tenho interesse no plano Profissional de agentes de IA para advogados.',
+        personalizado: 'Olá! Tenho interesse em uma solução personalizada de IA para o meu escritório.'
+      };
+
+      document.querySelectorAll('[data-wa]').forEach(function (el) {
+        var chave = el.getAttribute('data-wa');
+        var msg = MENSAGENS[chave] || MENSAGENS.geral;
+        el.setAttribute('href', base + '?text=' + encodeURIComponent(msg));
+        el.setAttribute('target', '_blank');
+        el.setAttribute('rel', 'noopener');
+      });
+    })();
+  </script>
+
+</body>
+</html>
